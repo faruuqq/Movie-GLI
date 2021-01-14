@@ -1,0 +1,6 @@
+framework module Pods_Movie_GLI {
+  umbrella header "Pods-Movie-GLI-umbrella.h"
+
+  export *
+  module * { export * }
+}
