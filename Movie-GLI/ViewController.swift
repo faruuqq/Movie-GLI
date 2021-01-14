@@ -21,13 +21,14 @@ class ViewController: UICollectionViewController {
     }()
     
     enum BaseUrl {
-        case discoverMovie, searchMovie
+        case discoverMovie, searchMovie, getReview
     }
     
     private var dataSource: DataSource!
     private var fetchingMore = false
     private var pageNumber = 1
     var item: [Results] = []
+    var selectedItem: Results?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +54,7 @@ extension ViewController: UISearchBarDelegate {
             case .success(let data):
                 self.item = []
                 data.results.forEach { (item) in
-                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil)
+                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil, imageLandscape: item.imageLandscape, content: nil)
                     self.item.append(newItem)
                     self.applySnapshot(item: self.item)
                 }
@@ -110,40 +111,39 @@ extension ViewController {
         dataSource.apply(snapshot, animatingDifferences: false)
     }
     
-    fileprivate func discoverMovies(url: BaseUrl, query: String?, page: Int?, completed: @escaping (Result<Root, Error>) ->()) {
-        var parameters = ["api_key" : "88a8b9b29d2fd7cd6c976f0b79c01ca3",
-                          "page" : "\(page ?? 1)"]
+    func discoverMovies(url: BaseUrl, query: String?, page: Int?, completion: @escaping (Result<Root, Error>) ->()) {
         let headers: HTTPHeaders = ["Accept": "application/json"]
         let baseUrl = "https://api.themoviedb.org/3"
         var getUrl: String?
+        var parameters: [String: String]?
         
         switch url {
         case .discoverMovie:
             getUrl = "/discover/movie?sort_by=popularity.desc"
+            parameters = ["api_key" : "88a8b9b29d2fd7cd6c976f0b79c01ca3",
+                          "page" : "\(page ?? 1)"]
         case .searchMovie:
             getUrl = "/search/movie"
-        }
-        
-        if query != nil {
             parameters = [
                 "api_key" : "88a8b9b29d2fd7cd6c976f0b79c01ca3",
                 "query" : query!,
                 "page" : "\(page ?? 1)"
             ]
+            
+        case .getReview:
+            getUrl = "/movie/464052/reviews"
+            parameters = [
+                "api_key" : "88a8b9b29d2fd7cd6c976f0b79c01ca3",
+            ]
         }
-        print(parameters)
-        AF.request(baseUrl + getUrl!, parameters: parameters, headers: headers).responseJSON { (result) in
+        
+        AF.request(baseUrl + getUrl!, parameters: parameters, headers: headers).responseDecodable(of: Root.self) { (result) in
             if let error = result.error {
-                completed(.failure(error))
+                completion(.failure(error))
             }
             print(result.response!.statusCode)
-            do {
-                guard result.response!.statusCode == 200 else { return }
-                let decode = try JSONDecoder().decode(Root.self, from: result.data!)
-                completed(.success(decode))
-            } catch {
-                print(error.localizedDescription)
-            }
+            guard result.response!.statusCode == 200 else { return }
+            completion(.success(result.value!))
         }
     }
     
@@ -155,7 +155,7 @@ extension ViewController {
             case .success(let data):
                 self.item = []
                 data.results.forEach { (item) in
-                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil)
+                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil, imageLandscape: item.imageLandscape, content: nil)
                     self.item.append(newItem)
                     self.applySnapshot(item: self.item)
                 }
@@ -178,12 +178,8 @@ extension ViewController {
     }
     
     func beginBatchFetch() {
-        
-        
-        
         fetchingMore = true
         print("fetching begin")
-        
         pageNumber += 1
         discoverMovies(url: .discoverMovie, query: nil, page: pageNumber) { (result) in
             switch result {
@@ -191,15 +187,28 @@ extension ViewController {
                 print(error.localizedDescription)
             case .success(let data):
                 data.results.forEach { (item) in
-                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil)
+                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil, imageLandscape: nil, content: nil)
                     self.item.append(newItem)
                     self.applySnapshot(item: self.item)
                 }
             }
         }
-        
         fetchingMore = false
-        
     }
 }
 
+extension ViewController {
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedItem = dataSource.itemIdentifier(for: indexPath)
+        performSegue(withIdentifier: "toDetail", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let detailVC = segue.destination as! DetailVC
+        
+        detailVC.movieId = selectedItem?.id ?? 0
+        detailVC.movieTitle = selectedItem?.title ?? ""
+        detailVC.movieBackdrop = "https://image.tmdb.org/t/p/w300\(selectedItem?.imageLandscape ?? "")"
+        detailVC.movieOverview = selectedItem?.overview ?? ""
+    }
+}
