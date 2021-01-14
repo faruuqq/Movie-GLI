@@ -19,3 +19,16 @@ Rules:
 4. You can use a 3rd party library.
 5. Make sure you do your code quality review before submitting.
 
+Notes:
+1. Base URL : https://api.themoviedb.org/3
+2. API key : 88a8b9b29d2fd7cd6c976f0b79c01ca3
+3. Image base URL : https://image.tmdb.org/t/p/w300
+
+Discover Parameters:
+1. parameter : /discover/movie?sort_by=popularity.desc
+2. api_key
+
+Search Movie Parameters:
+1. api_key
+2. query
+3. parameter : /search/movie
