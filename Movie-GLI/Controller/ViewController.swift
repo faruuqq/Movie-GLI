@@ -63,6 +63,23 @@ extension ViewController: UISearchBarDelegate {
         searchController.isActive = false
     }
     
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        discoverMovies(url: .searchMovie, query: searchBar.searchTextField.text, page: nil) { (result) in
+            switch result {
+            case .failure(let error):
+                print(error.localizedDescription)
+                return
+            case .success(let data):
+                self.item = []
+                data.results.forEach { (item) in
+                    let newItem = Results(id: item.id, title: item.title, image: item.image, overview: item.overview, youtube: nil, imageLandscape: item.imageLandscape, content: nil)
+                    self.item.append(newItem)
+                    self.applySnapshot(item: self.item)
+                }
+            }
+        }
+    }
+    
 }
 
 extension ViewController {
