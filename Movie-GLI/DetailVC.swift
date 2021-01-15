@@ -6,19 +6,18 @@
 //
 
 import UIKit
-import youtube_ios_player_helper
 import SDWebImage
 import Alamofire
+import youtube_ios_player_helper
 
-class DetailVC: UIViewController {
+class DetailVC: UIViewController, YTPlayerViewDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var backdrop: UIImageView!
     @IBOutlet weak var overview: UILabel!
     @IBOutlet weak var review: UILabel!
     @IBOutlet weak var reviewOwner: UILabel!
-    @IBOutlet weak var youtube: UIView!
-    @IBOutlet weak var scrollContent: UIView!
+    @IBOutlet weak var youtube: YTPlayerView!
     
     var movieTitle: String?
     var movieId: Int?
@@ -37,7 +36,8 @@ class DetailVC: UIViewController {
         backdrop.sd_setImage(with: URL(string: movieBackdrop ?? ""), completed: nil)
         overview.text = movieOverview ?? ""
         getReview()
-//        scrollView.contentSize = CGSize(width: view.frame.width, height: scrollContent.frame.height)
+        youtube.delegate = self
+        getYouTube()
     }
 
 }
@@ -76,6 +76,17 @@ extension DetailVC {
             case .success(let data):
                 self?.reviewOwner.text = data.results.first?.author
                 self?.review.text = data.results.first?.content
+            }
+        }
+    }
+    
+    fileprivate func getYouTube() {
+        fetchData(url: .youtube) { [weak self] (result) in
+            switch result {
+            case .failure(let error):
+                print(error.localizedDescription)
+            case .success(let data):
+                self?.youtube.load(withVideoId: (data.results.first?.key)!, playerVars: ["playsinline" : 1])
             }
         }
     }
