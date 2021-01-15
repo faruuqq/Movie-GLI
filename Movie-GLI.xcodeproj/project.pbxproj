@@ -17,7 +17,6 @@
 		2A68E03425AFF6800062BE62 /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A68E03225AFF6800062BE62 /* HomeCell.swift */; };
 		2A68E03525AFF6800062BE62 /* HomeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A68E03325AFF6800062BE62 /* HomeCell.xib */; };
 		2A68E04425B05AA00062BE62 /* DetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A68E04225B05A9F0062BE62 /* DetailVC.swift */; };
-		2A68E04525B05AA00062BE62 /* DetailVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A68E04325B05A9F0062BE62 /* DetailVC.xib */; };
 		FCCC0CA429171DEAA3B21A7A /* Pods_Movie_GLI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 87953BDAFAE1B3900B5108F7 /* Pods_Movie_GLI.framework */; };
 /* End PBXBuildFile section */
 
@@ -35,7 +34,6 @@
 		2A68E03225AFF6800062BE62 /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		2A68E03325AFF6800062BE62 /* HomeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = HomeCell.xib; sourceTree = "<group>"; };
 		2A68E04225B05A9F0062BE62 /* DetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailVC.swift; sourceTree = "<group>"; };
-		2A68E04325B05A9F0062BE62 /* DetailVC.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailVC.xib; sourceTree = "<group>"; };
 		87953BDAFAE1B3900B5108F7 /* Pods_Movie_GLI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Movie_GLI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5CAE41067C5D1D85CCE67CF /* Pods-Movie-GLI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movie-GLI.debug.xcconfig"; path = "Target Support Files/Pods-Movie-GLI/Pods-Movie-GLI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -75,18 +73,41 @@
 			children = (
 				2A68DFDE25AFDBB00062BE62 /* AppDelegate.swift */,
 				2A68DFE025AFDBB00062BE62 /* SceneDelegate.swift */,
-				2A68DFE225AFDBB00062BE62 /* ViewController.swift */,
-				2A68DFE425AFDBB00062BE62 /* Main.storyboard */,
-				2A68E04225B05A9F0062BE62 /* DetailVC.swift */,
-				2A68E04325B05A9F0062BE62 /* DetailVC.xib */,
-				2A68E03225AFF6800062BE62 /* HomeCell.swift */,
-				2A68E03325AFF6800062BE62 /* HomeCell.xib */,
-				2A68E02F25AFF3E90062BE62 /* Model.swift */,
+				2A68E04825B121080062BE62 /* Controller */,
+				2A68E04A25B121150062BE62 /* View */,
+				2A68E04B25B1211D0062BE62 /* Model */,
 				2A68DFE725AFDBB30062BE62 /* Assets.xcassets */,
 				2A68DFE925AFDBB30062BE62 /* LaunchScreen.storyboard */,
 				2A68DFEC25AFDBB30062BE62 /* Info.plist */,
 			);
 			path = "Movie-GLI";
+			sourceTree = "<group>";
+		};
+		2A68E04825B121080062BE62 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				2A68DFE225AFDBB00062BE62 /* ViewController.swift */,
+				2A68E04225B05A9F0062BE62 /* DetailVC.swift */,
+				2A68E03225AFF6800062BE62 /* HomeCell.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		2A68E04A25B121150062BE62 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2A68DFE425AFDBB00062BE62 /* Main.storyboard */,
+				2A68E03325AFF6800062BE62 /* HomeCell.xib */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		2A68E04B25B1211D0062BE62 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				2A68E02F25AFF3E90062BE62 /* Model.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		40FC8218BA78012819EF8057 /* Pods */ = {
@@ -169,7 +190,6 @@
 				2A68E03525AFF6800062BE62 /* HomeCell.xib in Resources */,
 				2A68DFE825AFDBB30062BE62 /* Assets.xcassets in Resources */,
 				2A68DFE625AFDBB00062BE62 /* Main.storyboard in Resources */,
-				2A68E04525B05AA00062BE62 /* DetailVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

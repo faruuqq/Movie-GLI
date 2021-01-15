@@ -16,12 +16,12 @@ class ViewController: UICollectionViewController {
     
     let searchController: UISearchController = {
         let search = UISearchController()
-        search.searchBar.placeholder = "Search symbol"
+        search.searchBar.placeholder = "Search movie"
         return search
     }()
     
     enum BaseUrl {
-        case discoverMovie, searchMovie, getReview
+        case discoverMovie, searchMovie
     }
     
     private var dataSource: DataSource!
@@ -129,12 +129,6 @@ extension ViewController {
                 "query" : query!,
                 "page" : "\(page ?? 1)"
             ]
-            
-        case .getReview:
-            getUrl = "/movie/464052/reviews"
-            parameters = [
-                "api_key" : "88a8b9b29d2fd7cd6c976f0b79c01ca3",
-            ]
         }
         
         AF.request(baseUrl + getUrl!, parameters: parameters, headers: headers).responseDecodable(of: Root.self) { (result) in
@@ -174,7 +168,6 @@ extension ViewController {
                 print("stopping")
             }
         }
-
     }
     
     func beginBatchFetch() {
@@ -208,7 +201,7 @@ extension ViewController {
         
         detailVC.movieId = selectedItem?.id ?? 0
         detailVC.movieTitle = selectedItem?.title ?? ""
-        detailVC.movieBackdrop = "https://image.tmdb.org/t/p/w300\(selectedItem?.imageLandscape ?? "")"
+        detailVC.movieBackdrop = "https://image.tmdb.org/t/p/w300\(selectedItem?.imageLandscape ?? selectedItem?.image ?? "")"
         detailVC.movieOverview = selectedItem?.overview ?? ""
     }
 }

@@ -86,7 +86,7 @@ extension DetailVC {
             case .failure(let error):
                 print(error.localizedDescription)
             case .success(let data):
-                self?.youtube.load(withVideoId: (data.results.first?.key)!, playerVars: ["playsinline" : 1])
+                self?.youtube.load(withVideoId: (data.results.first?.key ?? ""), playerVars: ["playsinline" : 1])
             }
         }
     }

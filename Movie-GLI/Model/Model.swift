@@ -28,7 +28,6 @@ struct Results: Decodable, Hashable {
         case image = "poster_path"
         case youtube = "key"
         case imageLandscape = "backdrop_path"
-//        case review = "content"
         case id, overview, title, content
     }
 }
